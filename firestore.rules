@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Couple Anniversary Sites
+    match /sites/{siteId} {
+      allow read: if true;
+      allow write: if request.auth != null || true;
+    }
+
+    // 2. Audio files stored directly in Firestore (no Firebase Storage needed)
+    match /audio_files/{audioId} {
+      allow read: if true;
+      allow write: if request.auth != null || true;
+
+      match /chunks/{chunkId} {
+        allow read: if true;
+        allow write: if request.auth != null || true;
+      }
+    }
+
+    // 3. Fallback rule for any other collection
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null || true;
+    }
+  }
+}
+
+

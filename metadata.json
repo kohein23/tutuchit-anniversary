@@ -1,0 +1,8 @@
+{
+  "name": "TuTuChit-Anniversary",
+  "description": "A cute and aesthetic anniversary website optimized for mobile and iPad.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
