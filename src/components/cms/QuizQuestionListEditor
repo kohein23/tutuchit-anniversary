@@ -1,0 +1,201 @@
+import { Plus, Trash2, HelpCircle, Sparkles } from 'lucide-react';
+import { QuizQuestion } from '../../contexts/SiteContext';
+
+interface QuizQuestionListEditorProps {
+  title?: string;
+  questions: QuizQuestion[];
+  onChange: (updated: QuizQuestion[]) => void;
+  accentColor?: 'rose' | 'pink' | 'purple';
+}
+
+export function QuizQuestionListEditor({
+  title = "Quiz မေးခွန်းများ စီမံခန့်ခွဲခြင်း",
+  questions = [],
+  onChange,
+  accentColor = 'rose'
+}: QuizQuestionListEditorProps) {
+  const colorMap = {
+    rose: {
+      btn: 'bg-[#881337] hover:bg-rose-900',
+      badge: 'text-[#881337] bg-rose-50',
+      ring: 'focus:ring-rose-300',
+      radio: 'text-rose-600 focus:ring-rose-500'
+    },
+    pink: {
+      btn: 'bg-pink-600 hover:bg-pink-700',
+      badge: 'text-pink-700 bg-pink-50',
+      ring: 'focus:ring-pink-300',
+      radio: 'text-pink-600 focus:ring-pink-500'
+    },
+    purple: {
+      btn: 'bg-purple-600 hover:bg-purple-700',
+      badge: 'text-purple-700 bg-purple-50',
+      ring: 'focus:ring-purple-300',
+      radio: 'text-purple-600 focus:ring-purple-500'
+    }
+  }[accentColor];
+
+  const handleAddQuestion = () => {
+    onChange([
+      ...questions,
+      {
+        question: `မေးခွန်းအသစ် ${questions.length + 1}?`,
+        options: ['ရွေးချယ်စရာ A', 'ရွေးချယ်စရာ B', 'ရွေးချယ်စရာ C', 'ရွေးချယ်စရာ D'],
+        answer: 0
+      }
+    ]);
+  };
+
+  const handleSetDefaults = () => {
+    onChange([
+      { 
+        question: 'ကိုကိုနဲ့ ဘေဘီ ပထမဆုံး စတင်တွေ့ဆုံခဲ့တဲ့ နေရာလေးက ဘယ်နေရာလဲ?', 
+        options: ['ကော်ဖီဆိုင်လေး', 'ပန်းခြံထဲမှာ', 'ကျောင်း/တက္ကသိုလ်', 'Social Media / Online'], 
+        answer: 3 
+      },
+      { 
+        question: 'ဘေဘီ့ရဲ့ အကြိုက်ဆုံး အရောင်လေးက ဘာအရောင်လဲ?', 
+        options: ['ပန်းရောင်နုနုလေး', 'အဖြူရောင်သန့်သန့်', 'အပြာရောင်အေးအေး', 'ခရမ်းရောင်လေး'], 
+        answer: 0 
+      },
+      { 
+        question: 'ကိုကိုနဲ့ ဘေဘီကြား အမှတ်တရအရှိဆုံး အစားအစာက ဘာလဲ?', 
+        options: ['မာလာရှမ်းကော', 'ပီဇာ', 'ရေခဲမုန့်', 'ခေါက်ဆွဲကြော်'], 
+        answer: 0 
+      }
+    ]);
+  };
+
+  return (
+    <div className="space-y-4 pt-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-gray-200">
+        <div>
+          <h4 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+            <HelpCircle size={16} className="text-pink-500" />
+            <span>{title}</span>
+            <span className="text-xs font-normal text-gray-500">({questions.length} Questions)</span>
+          </h4>
+          <p className="text-[11px] text-gray-500">
+            မေးခွန်းနှင့် အဖြေ ရွေးချယ်စရာများကို စိတ်ကြိုက် ပြင်ဆင်နိုင်ပါသည် (မှန်ကန်သော အဖြေကို ရွေးချယ်ထားပါ)
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {questions.length === 0 && (
+            <button
+              type="button"
+              onClick={handleSetDefaults}
+              className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-medium transition-colors"
+            >
+              <Sparkles size={13} className="text-amber-500" />
+              <span>နမူနာ မေးခွန်းများ ထည့်မည်</span>
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={handleAddQuestion}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-white rounded-xl text-xs font-medium transition-colors shadow-xs ${colorMap.btn}`}
+          >
+            <Plus size={14} /> မေးခွန်းအသစ် ထည့်မည်
+          </button>
+        </div>
+      </div>
+
+      {questions.length === 0 ? (
+        <div className="p-6 text-center border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50/50">
+          <p className="text-xs text-gray-500 mb-2">မေးခွန်းများ မရှိသေးပါ။ မေးခွန်းအသစ် စတင်ထည့်သွင်းပါ</p>
+          <button
+            type="button"
+            onClick={handleSetDefaults}
+            className="text-xs font-bold text-pink-600 hover:underline"
+          >
+            + နမူနာ မေးခွန်း ၃ ခု အလိုအလျောက် ထည့်သွင်းမည်
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {questions.map((q, qIndex) => (
+            <div key={qIndex} className="p-4 bg-white rounded-2xl border border-gray-200 shadow-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${colorMap.badge}`}>
+                  မေးခွန်း {qIndex + 1}
+                </span>
+                {questions.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = questions.filter((_, idx) => idx !== qIndex);
+                      onChange(updated);
+                    }}
+                    className="text-gray-400 hover:text-red-500 p-1 transition-colors"
+                    title="မေးခွန်းကို ဖျက်မည်"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                )}
+              </div>
+
+              <div>
+                <label className="text-xs text-gray-600 block mb-1">မေးခွန်း စာသား</label>
+                <input
+                  type="text"
+                  value={q.question}
+                  onChange={(e) => {
+                    const updated = [...questions];
+                    updated[qIndex].question = e.target.value;
+                    onChange(updated);
+                  }}
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 ${colorMap.ring} outline-none text-sm font-medium`}
+                  placeholder="မေးခွန်းကို ရိုက်ထည့်ပါ..."
+                />
+              </div>
+
+              <div className="space-y-2 pt-1">
+                <label className="text-xs text-gray-600 block font-medium">
+                  အဖြေ ရွေးချယ်စရာများ (မှန်ကန်သော အဖြေကို ရေဒီယိုအဝိုင်း နှိပ်၍ ရွေးပါ)
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {q.options.map((opt, optIndex) => (
+                    <div 
+                      key={optIndex} 
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-colors ${
+                        q.answer === optIndex ? 'bg-emerald-50/70 border-emerald-300 ring-1 ring-emerald-300/60' : 'bg-gray-50 border-gray-200'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name={`quiz-ans-${qIndex}-${title}`}
+                        checked={q.answer === optIndex}
+                        onChange={() => {
+                          const updated = [...questions];
+                          updated[qIndex].answer = optIndex;
+                          onChange(updated);
+                        }}
+                        className="text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                        title="ဤအဖြေကို မှန်ကန်သော အဖြေအဖြစ် သတ်မှတ်မည်"
+                      />
+                      <span className="text-xs font-bold text-gray-400 select-none">
+                        {String.fromCharCode(65 + optIndex)}.
+                      </span>
+                      <input
+                        type="text"
+                        value={opt}
+                        onChange={(e) => {
+                          const updated = [...questions];
+                          updated[qIndex].options[optIndex] = e.target.value;
+                          onChange(updated);
+                        }}
+                        className="flex-1 bg-transparent border-none text-xs outline-none font-medium text-gray-800"
+                        placeholder={`Option ${optIndex + 1}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
