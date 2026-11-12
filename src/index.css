@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@keyframes floatHeartSmooth {
+  0% {
+    transform: translate3d(0, 105vh, 0) scale(var(--heart-scale, 1)) rotate(var(--heart-rot, 0deg));
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--heart-opacity, 0.65);
+  }
+  85% {
+    opacity: var(--heart-opacity, 0.65);
+  }
+  100% {
+    transform: translate3d(var(--heart-sway, 25px), -15vh, 0) scale(calc(var(--heart-scale, 1) * 1.15)) rotate(calc(var(--heart-rot, 0deg) + 20deg));
+    opacity: 0;
+  }
+}
+
+@keyframes gentlePulseGlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(25px, -20px, 0) scale(1.12);
+    opacity: 0.45;
+  }
+}
+
+.animate-heart-float {
+  animation: floatHeartSmooth var(--heart-duration, 12s) cubic-bezier(0.35, 0, 0.65, 1) infinite;
+  animation-delay: var(--heart-delay, 0s);
+  will-change: transform, opacity;
+}
+
+.animate-bg-glow-1 {
+  animation: gentlePulseGlow 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-bg-glow-2 {
+  animation: gentlePulseGlow 18s ease-in-out infinite reverse;
+  will-change: transform;
+}
